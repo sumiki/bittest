@@ -7,7 +7,7 @@ public class Analyze
 {
 
     private static ArrayList transactions = new ArrayList();
-    private static int max_block_size = 1000000;
+    private static int max_block_size = 500000;
 
     private static int result_max_total = 0;
     private static ArrayList result_max_ids = new ArrayList();
