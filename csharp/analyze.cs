@@ -70,15 +70,16 @@ public class Analyze
         {
             IDictionary dictionary = (IDictionary)transactions[(int)item];
             Console.WriteLine( (string)dictionary["id"] );
-            result_total_fee = result_total_fee + float.Parse((string)dictionary["fee"], System.Globalization.CultureInfo.InvariantCulture);
+            //result_total_fee = result_total_fee + float.Parse((string)dictionary["fee"], System.Globalization.CultureInfo.InvariantCulture);
         }
-        Console.WriteLine( "result_total_fee:" + result_total_fee.ToString() + " + 12.5"  );
-
+        Console.WriteLine( "result_total_fee:" + string.Format("{0:#.0000}", result_total_fee ) + " + 12.5 = " + string.Format("{0:#.0000}", ( result_total_fee + 12.5 ) ) );
     }
+    
 
     private static void Calc( int[] list )
     {
             int totalsize = 0;
+            double totalfee = 0.0;
             ArrayList ids = new ArrayList();
             int i = 0;
 
@@ -86,17 +87,20 @@ public class Analyze
             {
                 IDictionary dictionary = (IDictionary)transactions[item];
                 int tmp_total = totalsize + Int32.Parse((string)dictionary["size"]);
-                if( tmp_total < max_block_size ){
+                double tmp_fee = totalfee + float.Parse((string)dictionary["fee"], System.Globalization.CultureInfo.InvariantCulture);
+                if( tmp_total <= max_block_size ){
                     ids.Add( item );
                     totalsize = tmp_total;
+                    totalfee = tmp_fee;
                     i += 1;
                 } else {
                     break;
                 }
             }
-            if( result_max_total < totalsize ){
+            if( result_total_fee <= totalfee ){
                 result_max_total = totalsize;
-                result_max_ids = ids;                
+                result_max_ids = ids;
+                result_total_fee = totalfee;                
             }
 
     }
